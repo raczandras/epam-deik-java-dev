@@ -1,38 +1,70 @@
 package com.epam.training.ticketservice.command;
 
+import com.epam.training.ticketservice.core.movie.MovieService;
+import com.epam.training.ticketservice.core.movie.exception.MovieAlreadyExistsException;
+import com.epam.training.ticketservice.core.movie.exception.MovieNotFoundException;
+import com.epam.training.ticketservice.core.movie.model.MovieDto;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 
+import java.util.List;
+
 @ShellComponent
 public class MovieCommand {
-    //TODO make commands actually work
 
-    public MovieCommand() {
+    private final MovieService movieService;
+
+    public MovieCommand(MovieService movieService) {
+        this.movieService = movieService;
     }
 
     @ShellMethod(value = "List all Movies", key = "list movies")
-    public String[] listMovies() {
-        return "Elso filme;Masodik film;Harmadik film".split(";");
+    public List<MovieDto> listMovies() {
+        return movieService.getMovieList();
     }
 
     @ShellMethodAvailability("isAvailable")
     @ShellMethod(value = "Delete a movie by title", key = "delete movie")
     public void deleteMovie(String title) {
-
+        try {
+            movieService.deleteMovie(title);
+        } catch (MovieNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @ShellMethodAvailability("isAvailable")
     @ShellMethod(value = "Create a new movie", key = "create movie")
     public String createMovie(String title, String genre, int screeningTime) {
-        return "Movie created: movie";
+        MovieDto movieDto = MovieDto.builder()
+                .title(title)
+                .genre(genre)
+                .screeningTime(screeningTime)
+                .build();
+        try {
+            movieService.createMovie(movieDto);
+            return "Movie created: " + movieDto;
+        } catch (MovieAlreadyExistsException e) {
+            return e.getMessage();
+        }
     }
 
     @ShellMethodAvailability("isAvailable")
     @ShellMethod(value = "Update a movie", key = "update movie")
     public String updateMovie(String title, String genre, int screeningTime) {
-        return "Movie updated: movie";
+        MovieDto movieDto = MovieDto.builder()
+                .title(title)
+                .genre(genre)
+                .screeningTime(screeningTime)
+                .build();
+        try {
+            movieService.updateMovie(movieDto);
+            return "Movie updated: " + movieDto;
+        } catch (MovieNotFoundException e) {
+            return e.getMessage();
+        }
     }
 
     private Availability isAvailable() {
