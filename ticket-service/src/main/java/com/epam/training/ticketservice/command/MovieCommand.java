@@ -12,7 +12,7 @@ public class MovieCommand {
     public MovieCommand() {
     }
 
-    @ShellMethod(value = "List All Available Movies", key = "list movies")
+    @ShellMethod(value = "List all Movies", key = "list movies")
     public String[] listMovies() {
         return "Elso filme;Masodik film;Harmadik film".split(";");
     }
@@ -24,13 +24,13 @@ public class MovieCommand {
     }
 
     @ShellMethodAvailability("isAvailable")
-    @ShellMethod(value = "Create new movie", key = "create movie")
+    @ShellMethod(value = "Create a new movie", key = "create movie")
     public String createMovie(String title, String genre, int screeningTime) {
         return "Movie created: movie";
     }
 
     @ShellMethodAvailability("isAvailable")
-    @ShellMethod(value = "Create new movie", key = "update movie")
+    @ShellMethod(value = "Update a movie", key = "update movie")
     public String updateMovie(String title, String genre, int screeningTime) {
         return "Movie updated: movie";
     }
