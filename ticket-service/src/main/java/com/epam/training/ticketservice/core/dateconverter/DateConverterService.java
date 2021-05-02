@@ -1,4 +1,4 @@
-package com.epam.training.ticketservice.dateconverter;
+package com.epam.training.ticketservice.core.dateconverter;
 
 import java.text.ParseException;
 import java.util.Date;

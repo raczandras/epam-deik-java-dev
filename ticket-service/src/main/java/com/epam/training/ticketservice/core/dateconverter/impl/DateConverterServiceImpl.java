@@ -1,6 +1,6 @@
-package com.epam.training.ticketservice.dateconverter.impl;
+package com.epam.training.ticketservice.core.dateconverter.impl;
 
-import com.epam.training.ticketservice.dateconverter.DateConverterService;
+import com.epam.training.ticketservice.core.dateconverter.DateConverterService;
 import org.springframework.stereotype.Service;
 
 import java.text.DateFormat;
