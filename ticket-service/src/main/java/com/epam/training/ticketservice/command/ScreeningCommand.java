@@ -5,8 +5,6 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 
-import java.text.ParseException;
-
 @ShellComponent
 public class ScreeningCommand {
     //TODO make commands actually work

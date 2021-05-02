@@ -6,7 +6,7 @@ import org.springframework.shell.standard.ShellMethod;
 @ShellComponent
 public class UserCommand {
     //TODO make commands actually work
-    
+
     public UserCommand() {
     }
 
