@@ -10,6 +10,7 @@ import com.epam.training.ticketservice.core.screening.ScreeningService;
 import com.epam.training.ticketservice.core.screening.exception.ScreeningNotFoundException;
 import com.epam.training.ticketservice.core.screening.exception.ScreeningsOverlapException;
 import com.epam.training.ticketservice.core.screening.model.ScreeningDto;
+import com.epam.training.ticketservice.core.screening.model.ScreeningOutDto;
 import com.epam.training.ticketservice.core.screening.persistence.entity.ScreeningEntity;
 import com.epam.training.ticketservice.core.screening.persistence.repository.ScreeningRepository;
 import com.epam.training.ticketservice.core.dateconverter.DateConverterService;
@@ -40,9 +41,9 @@ public class ScreeningServiceImpl implements ScreeningService {
 
 
     @Override
-    public List<ScreeningDto> listScreenings() {
-        List<ScreeningDto> screenings = screeningRepository.findAll().stream().map(screening ->
-                ScreeningDto.builder()
+    public List<ScreeningOutDto> listScreenings() {
+        List<ScreeningOutDto> screenings = screeningRepository.findAll().stream().map(screening ->
+                ScreeningOutDto.builder()
                         .room(screening.getRoom().getName())
                         .movie(screening.getMovie())
                         .startDate(dateConverterService.convertDateToString(screening.getStartDate()))
@@ -81,14 +82,14 @@ public class ScreeningServiceImpl implements ScreeningService {
 
     private void checkForNulls(ScreeningDto screeningDto) {
         Objects.requireNonNull(screeningDto, "Screening cannot be null");
-        Objects.requireNonNull(screeningDto.getMovie().getTitle(), "Movie title cannot be null");
+        Objects.requireNonNull(screeningDto.getMovie(), "Movie title cannot be null");
         Objects.requireNonNull(screeningDto.getRoom(), "Room name cannot be null");
         Objects.requireNonNull(screeningDto.getStartDate(), "Start date cannot be null");
     }
 
     private ScreeningEntity makeScreening(ScreeningDto screeningDto) throws MovieNotFoundException, RoomNotFoundException, ParseException {
         return ScreeningEntity.builder()
-                .movie(queryMovie(screeningDto.getMovie().getTitle()))
+                .movie(queryMovie(screeningDto.getMovie()))
                 .room(queryRoom(screeningDto.getRoom()))
                 .startDate(dateConverterService.convertStringToDate(screeningDto.getStartDate()))
                 .build();

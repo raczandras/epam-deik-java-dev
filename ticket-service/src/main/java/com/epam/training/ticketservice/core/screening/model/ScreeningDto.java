@@ -12,16 +12,12 @@ import lombok.Getter;
 @Generated
 public class ScreeningDto {
 
-    private final MovieEntity movie;
+    private final String movie;
     private final String room;
     private final String startDate;
 
     @Override
     public String toString() {
-        return "Screening: "+movie.getTitle()+" in "+room+" at "+startDate;
-    }
-
-    public String toStringForList() {
-        return movie.getTitle()+" ("+movie.getGenre()+", "+movie.getScreeningTime()+" minutes), screened in room "+room+", at "+startDate;
+        return "Screening: "+movie+" in "+room+" at "+startDate;
     }
 }
