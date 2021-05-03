@@ -74,6 +74,7 @@ public class ScreeningServiceImpl implements ScreeningService {
         Optional<ScreeningEntity> screeningToDelete = screeningRepository
                 .findFirstByMovieAndRoomAndStartDate(screening.getMovie(), screening.getRoom(),
                         screening.getStartDate());
+        
         if (screeningToDelete.isEmpty()) {
             throw new ScreeningNotFoundException(screeningDto + " doesn't exist");
         }
@@ -116,16 +117,20 @@ public class ScreeningServiceImpl implements ScreeningService {
         Date screeningToAddStart = screeningToAdd.getStartDate();
         Date screeningToAddEnd = DateUtils.addMinutes(screeningToAddStart,
                 screeningToAdd.getMovie().getScreeningTime());
+
         List<ScreeningEntity> screenings = screeningRepository.findAllByRoom(screeningToAdd.getRoom());
+
         if (!screenings.isEmpty()) {
             for (ScreeningEntity screening : screenings) {
                 Date screeningStart = screening.getStartDate();
                 Date screeningEnd = DateUtils.addMinutes(screeningStart,
                         screening.getMovie().getScreeningTime());
+
                 if ((screeningToAddStart.before(screeningEnd))
                         && (screeningToAddEnd.after(screeningStart))) {
                     throw new ScreeningsOverlapException("There is an overlapping screening");
                 }
+
                 if ((screeningToAddStart.before(DateUtils.addMinutes(screeningEnd, 11)))
                         && (screeningToAddEnd.after(screeningStart))) {
                     throw new ScreeningsOverlapException(
