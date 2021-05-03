@@ -74,7 +74,7 @@ public class ScreeningServiceImpl implements ScreeningService {
         Optional<ScreeningEntity> screeningToDelete = screeningRepository
                 .findFirstByMovieAndRoomAndStartDate(screening.getMovie(), screening.getRoom(),
                         screening.getStartDate());
-        
+
         if (screeningToDelete.isEmpty()) {
             throw new ScreeningNotFoundException(screeningDto + " doesn't exist");
         }
