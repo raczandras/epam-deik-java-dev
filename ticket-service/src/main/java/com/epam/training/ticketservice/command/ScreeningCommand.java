@@ -1,5 +1,6 @@
 package com.epam.training.ticketservice.command;
 
+import com.epam.training.ticketservice.availability.AvailabilityProvider;
 import com.epam.training.ticketservice.core.movie.exception.MovieNotFoundException;
 import com.epam.training.ticketservice.core.room.exception.RoomNotFoundException;
 import com.epam.training.ticketservice.core.screening.ScreeningService;
@@ -18,9 +19,11 @@ import java.util.List;
 @ShellComponent
 public class ScreeningCommand {
     private final ScreeningService screeningService;
+    private final AvailabilityProvider availabilityProvider;
 
-    public ScreeningCommand(ScreeningService screeningService) {
+    public ScreeningCommand(ScreeningService screeningService, AvailabilityProvider availabilityProvider) {
         this.screeningService = screeningService;
+        this.availabilityProvider = availabilityProvider;
     }
 
     @ShellMethod(value = "List all screenings", key = "list screenings")
@@ -63,6 +66,6 @@ public class ScreeningCommand {
     }
 
     private Availability isAvailable() {
-        return Availability.available();
+        return availabilityProvider.isAvailable();
     }
 }

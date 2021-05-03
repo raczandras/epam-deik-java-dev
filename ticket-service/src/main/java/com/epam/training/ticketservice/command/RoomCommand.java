@@ -1,5 +1,6 @@
 package com.epam.training.ticketservice.command;
 
+import com.epam.training.ticketservice.availability.AvailabilityProvider;
 import com.epam.training.ticketservice.core.room.RoomService;
 import com.epam.training.ticketservice.core.room.exception.RoomAlreadyExistsException;
 import com.epam.training.ticketservice.core.room.exception.RoomNotFoundException;
@@ -14,9 +15,11 @@ import java.util.List;
 @ShellComponent
 public class RoomCommand {
     private final RoomService roomService;
+    private final AvailabilityProvider availabilityProvider;
 
-    public RoomCommand(RoomService roomService) {
+    public RoomCommand(RoomService roomService, AvailabilityProvider availabilityProvider) {
         this.roomService = roomService;
+        this.availabilityProvider = availabilityProvider;
     }
 
     @ShellMethod(value = "List All Rooms", key = "list rooms")
@@ -68,6 +71,6 @@ public class RoomCommand {
     }
 
     private Availability isAvailable() {
-        return Availability.available();
+        return availabilityProvider.isAvailable();
     }
 }

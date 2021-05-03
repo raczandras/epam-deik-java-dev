@@ -1,9 +1,12 @@
 package com.epam.training.ticketservice.command;
 
+import com.epam.training.ticketservice.availability.AvailabilityProvider;
 import com.epam.training.ticketservice.core.movie.MovieService;
 import com.epam.training.ticketservice.core.movie.exception.MovieAlreadyExistsException;
 import com.epam.training.ticketservice.core.movie.exception.MovieNotFoundException;
 import com.epam.training.ticketservice.core.movie.model.MovieDto;
+import com.epam.training.ticketservice.core.user.exception.UserNotFoundException;
+import com.epam.training.ticketservice.core.user.model.UserDto;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -15,9 +18,11 @@ import java.util.List;
 public class MovieCommand {
 
     private final MovieService movieService;
+    private final AvailabilityProvider availabilityProvider;
 
-    public MovieCommand(MovieService movieService) {
+    public MovieCommand(MovieService movieService, AvailabilityProvider availabilityProvider) {
         this.movieService = movieService;
+        this.availabilityProvider = availabilityProvider;
     }
 
     @ShellMethod(value = "List all Movies", key = "list movies")
@@ -68,7 +73,6 @@ public class MovieCommand {
     }
 
     private Availability isAvailable() {
-        return Availability.available();
+        return availabilityProvider.isAvailable();
     }
-
 }
