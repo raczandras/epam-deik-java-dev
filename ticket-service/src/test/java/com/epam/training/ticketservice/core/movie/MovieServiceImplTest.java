@@ -66,7 +66,7 @@ public class MovieServiceImplTest {
     }
 
     @Test
-    public void testCreatingMovieShouldThrowNullPointerException() {
+    public void testCreatingNullMovieShouldThrowNullPointerException() {
         // Given
 
         // When
@@ -121,20 +121,7 @@ public class MovieServiceImplTest {
     }
 
     @Test
-    public void testUpdatingUnknownMovieShouldThrowMovieNotFoundException() {
-        // Given
-        Mockito.when(movieRepository.findById(movieDto.getTitle())).thenReturn(Optional.empty());
-
-        // When
-        Assertions.assertThrows(MovieNotFoundException.class, ()-> movieService.updateMovie(movieDto));
-
-        // Then
-        Mockito.verify(movieRepository, times(0)).save(any());
-
-    }
-
-    @Test
-    public void testUpdateMovieShouldSaveUpdatedMovieWithValidMovieDto() throws MovieNotFoundException {
+    public void testUpdatingMovieShouldUpdateMovieSuccessfully() throws MovieNotFoundException {
         // Given
         MovieDto movieDto = MovieDto.builder()
                 .title("Star Wars")
@@ -152,7 +139,20 @@ public class MovieServiceImplTest {
     }
 
     @Test
-    public void testDeletingMovieShouldDeleteMovie () throws MovieNotFoundException {
+    public void testUpdatingUnknownMovieShouldThrowMovieNotFoundException() {
+        // Given
+        Mockito.when(movieRepository.findById(movieDto.getTitle())).thenReturn(Optional.empty());
+
+        // When
+        Assertions.assertThrows(MovieNotFoundException.class, ()-> movieService.updateMovie(movieDto));
+
+        // Then
+        Mockito.verify(movieRepository, times(0)).save(any());
+
+    }
+
+    @Test
+    public void testDeletingMovieShouldDeleteMovieSuccessfully() throws MovieNotFoundException {
 
         // When
         movieService.deleteMovie("Star Wars");
