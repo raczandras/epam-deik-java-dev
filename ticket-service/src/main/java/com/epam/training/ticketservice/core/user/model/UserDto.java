@@ -17,9 +17,9 @@ public class UserDto {
     @Override
     public String toString() {
         if (admin) {
-            return String.format("privileged account '"+username+"'");
+            return "privileged account '" + username + "'";
         } else  {
-            return String.format("account '%s'", username);
+            return "account " + username;
         }
     }
 }

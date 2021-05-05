@@ -18,6 +18,7 @@ public class ScreeningOutDto {
 
     @Override
     public String toString() {
-        return String.format(movie.getTitle()+" ("+movie.getGenre()+", "+movie.getScreeningTime()+" minutes), screened in room "+room+", at "+startDate);
+        return movie.getTitle() + " (" + movie.getGenre() + ", " + movie.getScreeningTime()
+                + " minutes), screened in room " + room + ", at " + startDate;
     }
 }

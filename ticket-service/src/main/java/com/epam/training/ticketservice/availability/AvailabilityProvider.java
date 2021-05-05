@@ -11,7 +11,7 @@ public class AvailabilityProvider {
 
     private final LoginService loginService;
 
-    public AvailabilityProvider(LoginService loginService, LoginService loginService1){
+    public AvailabilityProvider(LoginService loginService, LoginService loginService1) {
 
         this.loginService = loginService1;
     }

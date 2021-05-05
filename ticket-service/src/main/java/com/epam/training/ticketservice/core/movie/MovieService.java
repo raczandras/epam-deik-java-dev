@@ -9,7 +9,10 @@ import java.util.List;
 public interface MovieService {
 
     List<MovieDto> getMovieList();
+
     void createMovie(MovieDto movie) throws MovieAlreadyExistsException;
+
     void deleteMovie(String title) throws MovieNotFoundException;
+
     void updateMovie(MovieDto movieDto) throws MovieNotFoundException;
 }

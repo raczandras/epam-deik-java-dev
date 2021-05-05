@@ -9,8 +9,11 @@ import java.util.List;
 public interface RoomService {
 
     List<RoomDto> getRoomList();
+
     void createRoom(RoomDto roomDto) throws RoomAlreadyExistsException;
+
     void deleteRoom(String name) throws RoomNotFoundException;
+
     void updateRoom(RoomDto roomDto) throws RoomNotFoundException;
 
 }

@@ -38,7 +38,7 @@ public class MovieServiceImpl implements MovieService {
         try {
             movieRepository.deleteById(title);
         } catch (EmptyResultDataAccessException e) {
-            throw new MovieNotFoundException("Movie: "+title+" doesn't exist.");
+            throw new MovieNotFoundException("Movie: " + title + " doesn't exist.");
         }
     }
 
@@ -62,7 +62,7 @@ public class MovieServiceImpl implements MovieService {
         Objects.requireNonNull(movieDto.getGenre(), "Genre cannot be null");
         Optional<MovieEntity> movieToUpdate = movieRepository.findById(movieDto.getTitle());
         if (movieToUpdate.isEmpty()) {
-            throw new MovieNotFoundException("Movie: "+movieDto.getTitle()+" doesn't exist.");
+            throw new MovieNotFoundException("Movie: " + movieDto.getTitle() + " doesn't exist.");
         }
         movieRepository.save(new MovieEntity(movieDto.getTitle(), movieDto.getGenre(), movieDto.getScreeningTime()));
     }

@@ -32,7 +32,8 @@ public class ScreeningServiceImpl implements ScreeningService {
     private final RoomRepository roomRepository;
     private final DateConverterService dateConverterService;
 
-    public ScreeningServiceImpl(ScreeningRepository screeningRepository, MovieRepository movieRepository, RoomRepository roomRepository, DateConverterService dateConverterService) {
+    public ScreeningServiceImpl(ScreeningRepository screeningRepository, MovieRepository movieRepository,
+                                RoomRepository roomRepository, DateConverterService dateConverterService) {
         this.screeningRepository = screeningRepository;
         this.movieRepository = movieRepository;
         this.roomRepository = roomRepository;
@@ -56,7 +57,8 @@ public class ScreeningServiceImpl implements ScreeningService {
     }
 
     @Override
-    public void createScreening(ScreeningDto screeningDto) throws MovieNotFoundException, RoomNotFoundException, ParseException, ScreeningsOverlapException {
+    public void createScreening(ScreeningDto screeningDto) throws MovieNotFoundException, RoomNotFoundException,
+            ParseException, ScreeningsOverlapException {
         checkForNulls(screeningDto);
 
         ScreeningEntity screening = makeScreening(screeningDto);
@@ -66,7 +68,8 @@ public class ScreeningServiceImpl implements ScreeningService {
     }
 
     @Override
-    public void deleteScreening(ScreeningDto screeningDto) throws MovieNotFoundException, RoomNotFoundException, ScreeningNotFoundException, ParseException {
+    public void deleteScreening(ScreeningDto screeningDto) throws MovieNotFoundException, RoomNotFoundException,
+            ScreeningNotFoundException, ParseException {
         checkForNulls(screeningDto);
 
         ScreeningEntity screening = makeScreening(screeningDto);
@@ -88,7 +91,8 @@ public class ScreeningServiceImpl implements ScreeningService {
         Objects.requireNonNull(screeningDto.getStartDate(), "Start date cannot be null");
     }
 
-    private ScreeningEntity makeScreening(ScreeningDto screeningDto) throws MovieNotFoundException, RoomNotFoundException, ParseException {
+    private ScreeningEntity makeScreening(ScreeningDto screeningDto) throws MovieNotFoundException,
+            RoomNotFoundException, ParseException {
         return ScreeningEntity.builder()
                 .movie(queryMovie(screeningDto.getMovie()))
                 .room(queryRoom(screeningDto.getRoom()))
