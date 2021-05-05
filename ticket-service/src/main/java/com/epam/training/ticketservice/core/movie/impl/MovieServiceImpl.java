@@ -44,27 +44,29 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public void createMovie(MovieDto movie) throws MovieAlreadyExistsException {
-        Objects.requireNonNull(movie, "Movie cannot be null");
-        Objects.requireNonNull(movie.getTitle(), "Title cannot be null");
-        Objects.requireNonNull(movie.getGenre(), "Genre cannot be null");
-        Optional<MovieEntity> movieToCreate = movieRepository.findById(movie.getTitle());
+        Optional<MovieEntity> movieToCreate = checkMovie(movie);
+
         if (movieToCreate.isPresent()) {
             throw new MovieAlreadyExistsException("A movie with title: " + movie.getTitle() + " already exists");
         }
-        MovieEntity newMovie = new MovieEntity(movie.getTitle(), movie.getGenre(), movie.getScreeningTime());
-        movieRepository.save(newMovie);
+        movieRepository.save(new MovieEntity(movie.getTitle(), movie.getGenre(), movie.getScreeningTime()));
     }
 
     @Override
-    public void updateMovie(MovieDto movieDto) throws MovieNotFoundException {
-        Objects.requireNonNull(movieDto, "Movie cannot be null");
-        Objects.requireNonNull(movieDto.getTitle(), "Title cannot be null");
-        Objects.requireNonNull(movieDto.getGenre(), "Genre cannot be null");
-        Optional<MovieEntity> movieToUpdate = movieRepository.findById(movieDto.getTitle());
+    public void updateMovie(MovieDto movie) throws MovieNotFoundException {
+        Optional<MovieEntity> movieToUpdate = checkMovie(movie);
+
         if (movieToUpdate.isEmpty()) {
-            throw new MovieNotFoundException("Movie: " + movieDto.getTitle() + " doesn't exist.");
+            throw new MovieNotFoundException("Movie: " + movie.getTitle() + " doesn't exist.");
         }
-        movieRepository.save(new MovieEntity(movieDto.getTitle(), movieDto.getGenre(), movieDto.getScreeningTime()));
+        movieRepository.save(new MovieEntity(movie.getTitle(), movie.getGenre(), movie.getScreeningTime()));
+    }
+
+    public Optional<MovieEntity> checkMovie(MovieDto movie) {
+        Objects.requireNonNull(movie, "Movie cannot be null");
+        Objects.requireNonNull(movie.getTitle(), "Title cannot be null");
+        Objects.requireNonNull(movie.getGenre(), "Genre cannot be null");
+        return movieRepository.findById(movie.getTitle());
     }
 
     private MovieDto convertEntityToDto(MovieEntity movie) {
