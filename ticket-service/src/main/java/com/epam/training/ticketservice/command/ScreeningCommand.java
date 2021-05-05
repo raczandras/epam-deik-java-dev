@@ -60,7 +60,7 @@ public class ScreeningCommand {
     }
 
     private ScreeningDto makeDto(String movie, String room, String startDate) {
-       return ScreeningDto.builder()
+        return ScreeningDto.builder()
                 .movie(movie)
                 .startDate(startDate)
                 .room(room)

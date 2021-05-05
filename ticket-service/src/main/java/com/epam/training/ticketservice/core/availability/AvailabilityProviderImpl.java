@@ -11,9 +11,9 @@ public class AvailabilityProviderImpl implements AvailabilityProvider {
 
     private final LoginService loginService;
 
-    public AvailabilityProviderImpl(LoginService loginService, LoginService loginService1) {
+    public AvailabilityProviderImpl(LoginService loginService) {
 
-        this.loginService = loginService1;
+        this.loginService = loginService;
     }
 
     @Override

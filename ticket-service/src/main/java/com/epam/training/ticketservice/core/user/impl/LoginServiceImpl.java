@@ -20,6 +20,11 @@ public class LoginServiceImpl implements LoginService {
         this.userService = userService;
     }
 
+    public LoginServiceImpl(UserService userService, UserDto loggedInUser) {
+        this.userService = userService;
+        this.loggedInUser = loggedInUser;
+    }
+
     @Override
     public UserDto login(String username, String password) throws UserNotFoundException {
         Objects.requireNonNull(username, "Username cannot be null");
