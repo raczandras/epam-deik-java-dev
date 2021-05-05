@@ -5,8 +5,6 @@ import com.epam.training.ticketservice.core.movie.MovieService;
 import com.epam.training.ticketservice.core.movie.exception.MovieAlreadyExistsException;
 import com.epam.training.ticketservice.core.movie.exception.MovieNotFoundException;
 import com.epam.training.ticketservice.core.movie.model.MovieDto;
-import com.epam.training.ticketservice.core.user.exception.UserNotFoundException;
-import com.epam.training.ticketservice.core.user.model.UserDto;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
