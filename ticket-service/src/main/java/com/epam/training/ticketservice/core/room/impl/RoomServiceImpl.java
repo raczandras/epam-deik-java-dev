@@ -25,13 +25,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomDto> getRoomList() {
-        List<RoomDto> rooms = roomRepository.findAll().stream().map(room ->
-                RoomDto.builder()
-                        .name(room.getName())
-                        .rows(room.getRows())
-                        .columns(room.getColumns())
-                        .build()
-        ).collect(Collectors.toList());
+        List<RoomDto> rooms = roomRepository.findAll()
+                .stream().map(this::convertEntityToDto).collect(Collectors.toList());
         if (rooms.isEmpty()) {
             System.out.println("There are no rooms at the moment");
         }
@@ -40,32 +35,22 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void createRoom(RoomDto roomDto) throws RoomAlreadyExistsException {
-        Objects.requireNonNull(roomDto, "Room cannot be null");
-        Objects.requireNonNull(roomDto.getName(), "Name cannot be null");
-        Optional<RoomEntity> roomToCreate  = roomRepository.findById(roomDto.getName());
+        Optional<RoomEntity> roomToCreate  = checkRoom(roomDto);
+
         if (roomToCreate.isPresent()) {
             throw new RoomAlreadyExistsException("Room: " + roomDto.getName() + " already exists");
         }
-        roomRepository.save(new RoomEntity(
-                roomDto.getName(),
-                roomDto.getRows(),
-                roomDto.getColumns()
-        ));
+        roomRepository.save(new RoomEntity(roomDto.getName(), roomDto.getRows(), roomDto.getColumns()));
     }
 
     @Override
     public void updateRoom(RoomDto roomDto) throws RoomNotFoundException {
-        Objects.requireNonNull(roomDto, "Room cannot be null");
-        Objects.requireNonNull(roomDto.getName(), "Name cannot be null");
-        Optional<RoomEntity> roomToUpdate  = roomRepository.findById(roomDto.getName());
+        Optional<RoomEntity> roomToUpdate  = checkRoom(roomDto);
+
         if (roomToUpdate.isEmpty()) {
             throw new RoomNotFoundException("Room: " + roomDto.getName() + " doesn't exist");
         }
-        roomRepository.save(new RoomEntity(
-                roomDto.getName(),
-                roomDto.getRows(),
-                roomDto.getColumns()
-        ));
+        roomRepository.save(new RoomEntity(roomDto.getName(), roomDto.getRows(), roomDto.getColumns()));
     }
 
     @Override
@@ -76,5 +61,19 @@ public class RoomServiceImpl implements RoomService {
         } catch (EmptyResultDataAccessException e) {
             throw new RoomNotFoundException("Room: " + name + " doesn't exist");
         }
+    }
+
+    private Optional<RoomEntity> checkRoom(RoomDto roomDto) {
+        Objects.requireNonNull(roomDto, "Room cannot be null");
+        Objects.requireNonNull(roomDto.getName(), "Name cannot be null");
+        return roomRepository.findById(roomDto.getName());
+    }
+
+    private RoomDto convertEntityToDto(RoomEntity roomEntity) {
+        return RoomDto.builder()
+                .name(roomEntity.getName())
+                .columns(roomEntity.getColumns())
+                .rows(roomEntity.getRows())
+                .build();
     }
 }
