@@ -100,7 +100,6 @@ public class ScreeningServiceImpl implements ScreeningService {
                 .build();
     }
 
-
     protected MovieEntity queryMovie(String title) throws MovieNotFoundException {
         Optional<MovieEntity> movie = movieRepository.findById(title);
         if (movie.isEmpty()) {
@@ -127,11 +126,9 @@ public class ScreeningServiceImpl implements ScreeningService {
         if (!screenings.isEmpty()) {
             for (ScreeningEntity screening : screenings) {
                 Date screeningStart = screening.getStartDate();
-                Date screeningEnd = DateUtils.addMinutes(screeningStart,
-                        screening.getMovie().getScreeningTime());
+                Date screeningEnd = DateUtils.addMinutes(screeningStart, screening.getMovie().getScreeningTime());
 
-                if ((screeningToAddStart.before(screeningEnd))
-                        && (screeningToAddEnd.after(screeningStart))) {
+                if ((screeningToAddStart.before(screeningEnd)) && (screeningToAddEnd.after(screeningStart))) {
                     throw new ScreeningsOverlapException("There is an overlapping screening");
                 }
 

@@ -1,6 +1,6 @@
 package com.epam.training.ticketservice.command;
 
-import com.epam.training.ticketservice.availability.AvailabilityProvider;
+import com.epam.training.ticketservice.core.availability.AvailabilityProvider;
 import com.epam.training.ticketservice.core.room.RoomService;
 import com.epam.training.ticketservice.core.room.exception.RoomAlreadyExistsException;
 import com.epam.training.ticketservice.core.room.exception.RoomNotFoundException;
@@ -30,11 +30,8 @@ public class RoomCommand {
     @ShellMethodAvailability("isAvailable")
     @ShellMethod(value = "Create a new Room", key = "create room")
     public void createRoom(String name, int rows, int columns) {
-        RoomDto roomDto = RoomDto.builder()
-                .name(name)
-                .rows(rows)
-                .columns(columns)
-                .build();
+        RoomDto roomDto = makeDto(name, rows, columns);
+
         try {
             roomService.createRoom(roomDto);
             System.out.println("Room Created: " + roomDto);
@@ -46,11 +43,8 @@ public class RoomCommand {
     @ShellMethodAvailability("isAvailable")
     @ShellMethod(value = "Update a room", key = "update room")
     public void updateRoom(String name, int rows, int columns) {
-        RoomDto roomDto = RoomDto.builder()
-                .name(name)
-                .rows(rows)
-                .columns(columns)
-                .build();
+        RoomDto roomDto = makeDto(name, rows, columns);
+
         try {
             roomService.updateRoom(roomDto);
             System.out.println("Room Updated: " + roomDto);
@@ -68,6 +62,14 @@ public class RoomCommand {
         } catch (RoomNotFoundException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private RoomDto makeDto(String name, int rows, int columns) {
+        return RoomDto.builder()
+                .name(name)
+                .rows(rows)
+                .columns(columns)
+                .build();
     }
 
     private Availability isAvailable() {

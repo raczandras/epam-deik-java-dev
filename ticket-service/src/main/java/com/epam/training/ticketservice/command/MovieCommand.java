@@ -1,6 +1,6 @@
 package com.epam.training.ticketservice.command;
 
-import com.epam.training.ticketservice.availability.AvailabilityProvider;
+import com.epam.training.ticketservice.core.availability.AvailabilityProvider;
 import com.epam.training.ticketservice.core.movie.MovieService;
 import com.epam.training.ticketservice.core.movie.exception.MovieAlreadyExistsException;
 import com.epam.training.ticketservice.core.movie.exception.MovieNotFoundException;
@@ -41,11 +41,8 @@ public class MovieCommand {
     @ShellMethodAvailability("isAvailable")
     @ShellMethod(value = "Create a new movie", key = "create movie")
     public String createMovie(String title, String genre, int screeningTime) {
-        MovieDto movieDto = MovieDto.builder()
-                .title(title)
-                .genre(genre)
-                .screeningTime(screeningTime)
-                .build();
+        MovieDto movieDto = makeDto(title, genre, screeningTime);
+
         try {
             movieService.createMovie(movieDto);
             return "Movie created: " + movieDto;
@@ -57,17 +54,22 @@ public class MovieCommand {
     @ShellMethodAvailability("isAvailable")
     @ShellMethod(value = "Update a movie", key = "update movie")
     public String updateMovie(String title, String genre, int screeningTime) {
-        MovieDto movieDto = MovieDto.builder()
-                .title(title)
-                .genre(genre)
-                .screeningTime(screeningTime)
-                .build();
+        MovieDto movieDto = makeDto(title, genre, screeningTime);
+
         try {
             movieService.updateMovie(movieDto);
             return "Movie updated: " + movieDto;
         } catch (MovieNotFoundException e) {
             return e.getMessage();
         }
+    }
+
+    private MovieDto makeDto(String title, String genre, int screeningTime) {
+        return MovieDto.builder()
+                .title(title)
+                .genre(genre)
+                .screeningTime(screeningTime)
+                .build();
     }
 
     private Availability isAvailable() {

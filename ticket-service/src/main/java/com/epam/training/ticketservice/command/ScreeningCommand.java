@@ -1,6 +1,6 @@
 package com.epam.training.ticketservice.command;
 
-import com.epam.training.ticketservice.availability.AvailabilityProvider;
+import com.epam.training.ticketservice.core.availability.AvailabilityProvider;
 import com.epam.training.ticketservice.core.movie.exception.MovieNotFoundException;
 import com.epam.training.ticketservice.core.room.exception.RoomNotFoundException;
 import com.epam.training.ticketservice.core.screening.ScreeningService;
@@ -34,11 +34,8 @@ public class ScreeningCommand {
     @ShellMethodAvailability("isAvailable")
     @ShellMethod(value = "Create a new screening", key = "create screening")
     public void createScreening(String movie, String room, String startDate) {
-        ScreeningDto screeningDto = ScreeningDto.builder()
-                .movie(movie)
-                .room(room)
-                .startDate(startDate)
-                .build();
+        ScreeningDto screeningDto = makeDto(movie, room, startDate);
+
         try {
             screeningService.createScreening(screeningDto);
             System.out.println("Screening created: " + screeningDto);
@@ -50,12 +47,9 @@ public class ScreeningCommand {
 
     @ShellMethodAvailability("isAvailable")
     @ShellMethod(value = "Delete a screening", key = "delete screening")
-    public void deleteScreening(String movieTitle, String roomName, String startDate) {
-        ScreeningDto screeningDto = ScreeningDto.builder()
-                .movie(movieTitle)
-                .startDate(startDate)
-                .room(roomName)
-                .build();
+    public void deleteScreening(String movie, String room, String startDate) {
+        ScreeningDto screeningDto = makeDto(movie, room, startDate);
+
         try {
             screeningService.deleteScreening(screeningDto);
             System.out.println("Screening deleted: " + screeningDto);
@@ -63,6 +57,14 @@ public class ScreeningCommand {
                 | ScreeningNotFoundException | ParseException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private ScreeningDto makeDto(String movie, String room, String startDate) {
+       return ScreeningDto.builder()
+                .movie(movie)
+                .startDate(startDate)
+                .room(room)
+                .build();
     }
 
     private Availability isAvailable() {
